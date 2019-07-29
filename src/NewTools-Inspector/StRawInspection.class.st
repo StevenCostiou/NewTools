@@ -35,7 +35,9 @@ StRawInspection >> initializeWidgets [
 	attributeTable := self newTreeTable.
 	self addVariablesColumn.
 	self addValuesColumn.
-	self setAttributeTable
+	self setAttributeTable.
+	attributeTable
+		contextMenu: [ self objectCentricHaltOnAccessMenuActions beRoot asMenuPresenter ]
 ]
 
 { #category : #accessing }

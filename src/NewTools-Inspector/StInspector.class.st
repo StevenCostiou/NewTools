@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'views',
 		'evaluator',
-		'model'
+		'model',
+		'menuBar'
 	],
 	#classVars : [
 		'PreferredExtent'
@@ -15,10 +16,14 @@ Class {
 { #category : #specs }
 StInspector class >> defaultSpec [
 	<spec: #default>
-	
 	^ SpPanedLayout newVertical
 		position: 70 percent;
-		add: #views;
+		add:
+			(SpBoxLayout newVertical
+				add: #menuBar
+					withConstraints: [ :constraints | constraints height: self toolbarHeight + 5 ];
+				add: #views;
+				yourself);
 		add: #evaluator;
 		yourself
 ]
@@ -70,7 +75,11 @@ StInspector >> buildToolBar [
 	^ CmCommandGroup forSpec
 		register: (StInspectorBrowseCommand forSpecContext: self);
 		register: (StInspectorHelpCommand forSpecContext: self);
-		asToolBarPresenterWith: [ :presenter | presenter beIcons ]
+		register: ((HaltOnAccessCommand forSpecContext: self) iconName: #glamorousBug; yourself);
+		register: ((HaltOnReadCommand forSpecContext: self) iconName: #glamorousBug; yourself);
+		register: ((HaltOnWriteCommand forSpecContext: self) iconName: #glamorousBug; yourself);
+		register: ((HaltOnCallCommand forSpecContext: self) iconName: #glamorousBug; yourself);
+		asToolBarPresenterWith: [ :presenter | "presenter beIcons "]
 ]
 
 { #category : #private }
@@ -81,6 +90,7 @@ StInspector >> collectViews [
 
 { #category : #initialization }
 StInspector >> initializeWidgets [
+	menuBar := self buildToolBar.
 
 	views := self newNotebook.
 	evaluator := self newCode.
@@ -91,7 +101,9 @@ StInspector >> initializeWidgets [
 			title: each title 
 			provider: [ each ] ]).
 		
-	self refresh
+	self refresh.
+	
+	
 ]
 
 { #category : #initialization }
@@ -99,8 +111,8 @@ StInspector >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter 
-		title: self title;
-		toolBar: self buildToolBar
+		title: self title";
+		toolBar: self buildToolBar"
 ]
 
 { #category : #'model access' }

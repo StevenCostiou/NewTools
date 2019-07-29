@@ -37,7 +37,7 @@ StMetaBrowser class >> title [
 { #category : #initialization }
 StMetaBrowser >> initializeClassTree [
 	| classHierarchy |
-	classHierarchy := self model class withAllSuperclasses reversed.
+	classHierarchy := self model class withAllSuperclasses reversed reject:[:c| c isAnonymous].
 	classes
 		whenSelectionChangedDo: [ :classTreeSelection | self updateMethods: classTreeSelection ].
 	classes
@@ -97,5 +97,8 @@ StMetaBrowser >> updateMethods: classTreeSelection [
 				sortBlock: [ :a :b | a selector <= b selector ].
 			sortedMethods addAll: class methods.
 			methods items: sortedMethods ].
+	methods
+		contextMenu:
+			[ self objectCentricHaltOnCallMenuActions beRoot asMenuPresenter ].
 	methods unselectAll
 ]

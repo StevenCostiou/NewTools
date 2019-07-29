@@ -103,7 +103,7 @@ StBreakpointInspection >> initializeWidgets [
 		breakpointsInSourceCode text: (selectedItem at: #method) sourceCode.
 		breakpointsInSourceCode setSelection: (selectedItem at: #interval) ].
 	
-	methodsWithBreakpoints items: breakpointData
+	methodsWithBreakpoints items: (OrderedCollection new addAll: breakpointData; addAll:self objectCentricBreakpointData; yourself)
 ]
 
 { #category : #private }
