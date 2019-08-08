@@ -116,3 +116,9 @@ StBreakpointInspection >> labelForHaltSelector: aSelector [
 		ifTrue: [ ^ 'once' ].
 	^ 'always'
 ]
+
+{ #category : #initialization }
+StBreakpointInspection >> update [ 
+	super update.
+	self flag: 'Update the breakpoint list'
+]

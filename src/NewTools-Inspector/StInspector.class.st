@@ -79,7 +79,7 @@ StInspector >> buildToolBar [
 		register: ((HaltOnReadCommand forSpecContext: self) iconName: #glamorousBug; yourself);
 		register: ((HaltOnWriteCommand forSpecContext: self) iconName: #glamorousBug; yourself);
 		register: ((HaltOnCallCommand forSpecContext: self) iconName: #glamorousBug; yourself);
-		asToolBarPresenterWith: [ :presenter | "presenter beIcons "]
+		asToolBarPresenterWith: [ :presenter | presenter beBoth ]
 ]
 
 { #category : #private }
