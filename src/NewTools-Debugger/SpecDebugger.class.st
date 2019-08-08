@@ -44,11 +44,17 @@ SpecDebugger class >> defaultSpec [
 	^ SpPanedLayout newVertical
 		position: 70 percent;
 		add:
-			(SpBoxLayout newVertical
+			(SpPanedLayout newVertical
+				position: 40 percent;
 				add: #stackTable;
-				add: #toolbar
-					withConstraints: [ :constraint | constraint height: self toolbarHeight ];
-				add: #code;
+				add:
+					(SpBoxLayout newVertical
+						add: #toolbar
+							expand: false
+							fill: false
+							padding: 0;
+						add: #code;
+						yourself);
 				yourself);
 		add:
 			(SpPanedLayout newHorizontal
@@ -248,12 +254,12 @@ SpecDebugger >> initialize [
 
 { #category : #initialization }
 SpecDebugger >> initializeInspectors [
-	receiverInspector := StDebuggerInspector
-		newApplication: SpecNullApplication new
-		model: (StInspectorModel on: nil).
-	contextInspector := StDebuggerInspector
-		newApplication: SpecNullApplication new
-		model: (StInspectorModel on: [  ] asContext)
+	receiverInspector := (StDebuggerInspector
+		newApplication: self application
+		model: (StInspectorModel on: nil)) label: 'Receiver'.
+	contextInspector := (StDebuggerInspector
+		newApplication: self application
+		model: (StInspectorModel on: [  ] asContext)) label: 'Context'
 ]
 
 { #category : #stack }
@@ -291,7 +297,7 @@ SpecDebugger >> initializeWidgets [
 		acceptBlock: [ :text :notifyer | 
 			self
 				recompileMethodTo: text string
-				inContext: self stackTable selectedItem
+				inContext: self stackTable selection selectedItem
 				notifying: notifyer ].
 	self code whenBuiltDo: [ :ann | ann widget font: self codeFont ].
 	"self code selection whenChangedSend: #selectionChanged to: self"

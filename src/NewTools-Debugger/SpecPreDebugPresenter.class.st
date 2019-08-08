@@ -12,7 +12,10 @@ Class {
 { #category : #specs }
 SpecPreDebugPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add: #toolbar withConstraints: [ :constraints | constraints height: self toolbarHeight ];
+		add: #toolbar
+			expand: false
+			fill: false
+			padding: 0;
 		add: #textPresenter;
 		yourself
 ]

@@ -3,7 +3,8 @@ Class {
 	#superclass : #StInspection,
 	#instVars : [
 		'contextInspector',
-		'inspector'
+		'inspector',
+		'contextLabel'
 	],
 	#category : #'NewTools-Debugger-View'
 }
@@ -13,7 +14,10 @@ StDebuggerInspector class >> defaultSpec [
 	<spec: #default>
 	^ SpPanedLayout newHorizontal
 		position: 40 percent;
-		add: #contextInspector;
+		add: (SpBoxLayout newVertical 
+			add: #contextLabel expand: false fill: false padding: 5;
+			add: #contextInspector;
+			yourself);
 		add: #inspector;
 		yourself
 ]
@@ -58,6 +62,7 @@ StDebuggerInspector >> initializeInspector [
 
 { #category : #initialization }
 StDebuggerInspector >> initializeWidgets [
+	contextLabel := self newLabel.
 	self initializeContextInspector.
 	self initializeInspector
 ]
@@ -65,6 +70,12 @@ StDebuggerInspector >> initializeWidgets [
 { #category : #accessing }
 StDebuggerInspector >> inspectedObject [
 	^ self model inspectedObject
+]
+
+{ #category : #accessing }
+StDebuggerInspector >> label: aString [
+
+	contextLabel label: aString
 ]
 
 { #category : #updating }

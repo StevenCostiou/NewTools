@@ -21,7 +21,9 @@ StInspector class >> defaultSpec [
 		add:
 			(SpBoxLayout newVertical
 				add: #menuBar
-					withConstraints: [ :constraints | constraints height: self toolbarHeight + 5 ];
+					expand: false
+					fill: false
+					padding: 0;
 				add: #views;
 				yourself);
 		add: #evaluator;
