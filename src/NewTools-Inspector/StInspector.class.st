@@ -145,6 +145,7 @@ StInspector >> refresh [
 		window title: self title ].
 	evaluator doItReceiver: self model inspectedObject.
 	views pagesChanged.
+	views pages do:[:p| p retrievePresenter update].
 	self update
 ]
 
