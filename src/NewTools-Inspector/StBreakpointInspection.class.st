@@ -41,6 +41,7 @@ StBreakpointInspection >> breakpointDataFor: aMethod [
 				  put:	(b link optionOneShot	ifTrue: [ 'once' ] ifFalse: [ 'always' ]).
 			data at: #interval put: (b node start to: b node stop).
 			data at: #target put: 'instances of ', aMethod methodClass name.
+			data at: #breakpoint put: (BreakpointActivator on: b link). 
 			data ].
 		^breakpointData 
 ]
@@ -86,6 +87,7 @@ StBreakpointInspection >> haltDataFor: aMethod [
 				  put:	(self labelForHaltSelector: haltNode selector).
 			data at: #interval put: (haltNode start to: haltNode stop).
 			data at: #target put: 'instances of ', aMethod methodClass name.
+			data at: #breakpoint put: (BreakpointActivator on: nil).
 			data ].
 		^breakpointData 
 ]
@@ -97,20 +99,38 @@ StBreakpointInspection >> haltsSelectors [
 
 { #category : #initialization }
 StBreakpointInspection >> initializeWidgets [
-
 	methodsWithBreakpoints := self newTable.
 	methodsWithBreakpoints
-		addColumn: (SpStringTableColumn title: 'Type' evaluated: [ :item | item at: #type ]);
-		addColumn: (SpStringTableColumn title: 'Method' evaluated: [ :item | self printMethod: (item at: #method)]);
-		addColumn: (SpStringTableColumn title: 'When' evaluated: [ :item | item at: #onceOrAlways ]);
-		addColumn: (SpStringTableColumn title: 'Target(s)' evaluated: [ :item | item at: #target ]).
-		
-	methodsWithBreakpoints whenSelectionChangedDo: [ :selection | 
-		| selectedItem |
-		selectedItem := selection selectedItem.
-		breakpointsInSourceCode text: (selectedItem at: #method) sourceCode.
-		breakpointsInSourceCode setSelection: (selectedItem at: #interval) ].
-	
+		addColumn:
+			((SpCheckBoxTableColumn
+				title: ' '
+				evaluated: [ :item | (item at: #breakpoint) isActive ])
+				onActivation: [ :item | (item at: #breakpoint) enable ];
+				onDesactivation: [ :item | (item at: #breakpoint) disable ];
+				width: 20;
+				yourself);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Type'
+				evaluated: [ :item | item at: #type ]);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Method'
+				evaluated: [ :item | self printMethod: (item at: #method) ]);
+		addColumn:
+			(SpStringTableColumn
+				title: 'When'
+				evaluated: [ :item | item at: #onceOrAlways ]);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Target(s)'
+				evaluated: [ :item | item at: #target ]).
+	methodsWithBreakpoints
+		whenSelectionChangedDo: [ :selection | 
+			| selectedItem |
+			selectedItem := selection selectedItem.
+			breakpointsInSourceCode text: (selectedItem at: #method) sourceCode.
+			breakpointsInSourceCode setSelection: (selectedItem at: #interval) ].
 	methodsWithBreakpoints items: self computeBreakpointData
 ]
 
