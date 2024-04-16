@@ -42,15 +42,33 @@ StBreakOnStackBehavior class >> compiledMethod: aCompiledMethod node: aNode pc: 
 ]
 
 { #category : 'accessing' }
+StBreakOnStackBehavior >> ast [
+
+	^ ast
+]
+
+{ #category : 'accessing' }
 StBreakOnStackBehavior >> ast: anObject [
 
 	ast := anObject
 ]
 
 { #category : 'accessing' }
+StBreakOnStackBehavior >> bytecode [
+
+	^ bytecode
+]
+
+{ #category : 'accessing' }
 StBreakOnStackBehavior >> bytecode: anObject [
 
 	bytecode := anObject
+]
+
+{ #category : 'accessing' }
+StBreakOnStackBehavior >> compiledMethod [
+
+	^ compiledMethod
 ]
 
 { #category : 'accessing' }
@@ -65,9 +83,21 @@ StBreakOnStackBehavior >> execute [
 ]
 
 { #category : 'accessing' }
+StBreakOnStackBehavior >> offset [
+
+	^ offset
+]
+
+{ #category : 'accessing' }
 StBreakOnStackBehavior >> offset: anObject [
 
 	offset := anObject
+]
+
+{ #category : 'accessing' }
+StBreakOnStackBehavior >> pc [
+
+	^ pc
 ]
 
 { #category : 'accessing' }
