@@ -42,9 +42,6 @@ BreakOnStackTest >> tearDown [
 { #category : 'tests' }
 BreakOnStackTest >> testDebugPointInstallation [
 	| systemMethod behavior |
-	method := debuggerModel topContext method.	
-	sendNode := method sendNodes first. 
-	astInterval := sendNode start to: sendNode stop.
 	
 	debugPoint := debuggerModel
 		breakInContext: debuggerModel topContext
@@ -80,9 +77,6 @@ BreakOnStackTest >> testDebugPointRemoval [
 BreakOnStackTest >> testMethodCacheFlushed [
 
 	| tag |
-	method := debuggerModel topContext method.
-	sendNode := method sendNodes first.
-	astInterval := sendNode start to: sendNode stop.
 
 	metalink := MetaLink new
 		        metaObject: [:rcv|  tag := rcv ];
@@ -104,13 +98,10 @@ BreakOnStackTest >> testMethodCacheFlushed [
 BreakOnStackTest >> testStackMethodDifferentFromSystemMethod [
 
 	| systemMethod |
-	method := debuggerModel topContext method.
 	systemMethod := debuggerModel topContext receiver class
 		                lookupSelector: debuggerModel topContext selector.
 	self assert: method identicalTo: systemMethod.
 	
-	sendNode := method sendNodes first.
-	astInterval := sendNode start to: sendNode stop.
 	debugPoint := debuggerModel
 		breakInContext: debuggerModel topContext
 		astInterval: astInterval.
