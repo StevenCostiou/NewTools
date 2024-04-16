@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'debuggerModel',
 		'debugPoint',
-		'metalink'
+		'metalink',
+		'method',
+		'sendNode',
+		'astInterval'
 	],
 	#category : 'NewTools-DebugPoints-Tests',
 	#package : 'NewTools-DebugPoints-Tests'
@@ -12,13 +15,18 @@ Class {
 
 { #category : 'running' }
 BreakOnStackTest >> setUp [
-	super setUp.
+	super setUp.	
 
 	debuggerModel := StTestDebuggerProvider new debuggerWithRecursiveContext debuggerActionModel.
 	debuggerModel removeActionsForSession: debuggerModel session.
 	debuggerModel session stepInto.
 	debuggerModel session stepInto.
-	debuggerModel updateTopContext
+	debuggerModel updateTopContext.
+	
+	method := debuggerModel topContext method.
+	sendNode := method sendNodes first.
+	astInterval := sendNode start to: sendNode stop.
+
 ]
 
 { #category : 'running' }
@@ -33,7 +41,7 @@ BreakOnStackTest >> tearDown [
 
 { #category : 'tests' }
 BreakOnStackTest >> testDebugPointInstallation [
-	| method sendNode astInterval systemMethod behavior |
+	| systemMethod behavior |
 	method := debuggerModel topContext method.	
 	sendNode := method sendNodes first. 
 	astInterval := sendNode start to: sendNode stop.
@@ -58,11 +66,6 @@ BreakOnStackTest >> testDebugPointInstallation [
 { #category : 'tests' }
 BreakOnStackTest >> testDebugPointRemoval [
 
-	| method sendNode astInterval |
-	method := debuggerModel topContext method.
-	sendNode := method sendNodes first.
-	astInterval := sendNode start to: sendNode stop.
-
 	debugPoint := debuggerModel
 		              breakInContext: debuggerModel topContext
 		              astInterval: astInterval.
@@ -76,7 +79,7 @@ BreakOnStackTest >> testDebugPointRemoval [
 { #category : 'tests' }
 BreakOnStackTest >> testMethodCacheFlushed [
 
-	| method sendNode astInterval tag |
+	| tag |
 	method := debuggerModel topContext method.
 	sendNode := method sendNodes first.
 	astInterval := sendNode start to: sendNode stop.
@@ -100,7 +103,7 @@ BreakOnStackTest >> testMethodCacheFlushed [
 { #category : 'tests' }
 BreakOnStackTest >> testStackMethodDifferentFromSystemMethod [
 
-	| method sendNode astInterval systemMethod |
+	| systemMethod |
 	method := debuggerModel topContext method.
 	systemMethod := debuggerModel topContext receiver class
 		                lookupSelector: debuggerModel topContext selector.
