@@ -18,3 +18,8 @@ StDebuggerActionModel >> breakInContext: aContext astInterval: anInterval [
 	method flushCache.
 	^ debugPoint
 ]
+
+{ #category : '*NewTools-DebugPoints' }
+StDebuggerActionModel class >> breakOnStackBytecode [
+	 ^84
+]
