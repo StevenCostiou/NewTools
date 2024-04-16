@@ -56,6 +56,24 @@ BreakOnStackTest >> testDebugPointInstallation [
 ]
 
 { #category : 'tests' }
+BreakOnStackTest >> testDebugPointRemoval [
+
+	| method sendNode astInterval |
+	method := debuggerModel topContext method.
+	sendNode := method sendNodes first.
+	astInterval := sendNode start to: sendNode stop.
+
+	debugPoint := debuggerModel
+		              breakInContext: debuggerModel topContext
+		              astInterval: astInterval.
+
+	debugPoint remove.
+
+	self deny: (method methodClass >> method selector) hasMetaLinks.
+	self assert: (method at: 36) equals: 128
+]
+
+{ #category : 'tests' }
 BreakOnStackTest >> testMethodCacheFlushed [
 
 	| method sendNode astInterval tag |

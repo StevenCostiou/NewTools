@@ -105,3 +105,9 @@ StBreakOnStackBehavior >> pc: anObject [
 
 	pc := anObject
 ]
+
+{ #category : 'cleanup' }
+StBreakOnStackBehavior >> remove [ 
+	compiledMethod at: offset put: bytecode.
+	^super remove
+]
