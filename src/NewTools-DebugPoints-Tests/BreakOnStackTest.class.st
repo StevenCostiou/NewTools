@@ -32,6 +32,30 @@ BreakOnStackTest >> tearDown [
 ]
 
 { #category : 'tests' }
+BreakOnStackTest >> testDebugPointInstallation [
+	| method sendNode astInterval systemMethod behavior |
+	method := debuggerModel topContext method.	
+	sendNode := method sendNodes first. 
+	astInterval := sendNode start to: sendNode stop.
+	
+	debugPoint := debuggerModel
+		breakInContext: debuggerModel topContext
+		astInterval: astInterval.
+	
+	systemMethod := debuggerModel topContext receiver class
+		                lookupSelector: debuggerModel topContext selector.
+
+	behavior := debugPoint getBehavior: StBreakOnStackBehavior.
+
+	self assert: behavior notNil.
+	self assert: behavior bytecode equals: 128. "<- the bytecode that we are replacing by an unknown bytecode"
+	self assert: behavior offset equals: 36. "<- the offest where we find the bytecode in the instrumented method"
+	self assert: debugPoint target method identicalTo: systemMethod. "the debug point is also installed on the system method"
+	self assert: (method at: 36) equals: debuggerModel class breakOnStackBytecode 
+	
+]
+
+{ #category : 'tests' }
 BreakOnStackTest >> testMethodCacheFlushed [
 
 	| method sendNode astInterval tag |
