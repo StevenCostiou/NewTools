@@ -1,14 +1,15 @@
 Extension { #name : 'DebugPointManager' }
 
 { #category : '*NewTools-DebugPoints' }
-DebugPointManager class >> breakOnRunningMethod: aCompiledMethod node: aNode pc: aPC bytecode: aBytecode [
+DebugPointManager class >> breakOnRunningMethod: aCompiledMethod node: aNode pc: aPC bytecode: aBytecode offset: offset [
 
 	| behavior debugPoint |
 	behavior := StBreakOnStackBehavior
 		            compiledMethod: aCompiledMethod
 		            node: aNode
 		            pc: aPC
-		            bytecode: aBytecode.
+		            bytecode: aBytecode
+			   		   offset: offset.
 	behavior priority: 1.
 
 	debugPoint := self

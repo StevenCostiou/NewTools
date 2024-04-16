@@ -11,7 +11,8 @@ Class {
 		'compiledMethod',
 		'pc',
 		'bytecode',
-		'ast'
+		'ast',
+		'offset'
 	],
 	#category : 'NewTools-DebugPoints',
 	#package : 'NewTools-DebugPoints'
@@ -25,6 +26,18 @@ StBreakOnStackBehavior class >> compiledMethod: aCompiledMethod node: aNode pc: 
 		  ast: aNode;
 		  pc: aPC;
 		  bytecode: aBytecode;
+		  yourself
+]
+
+{ #category : 'instance creation' }
+StBreakOnStackBehavior class >> compiledMethod: aCompiledMethod node: aNode pc: aPC bytecode: aBytecode offset: anOffset [
+
+	^ self new
+		  compiledMethod: aCompiledMethod;
+		  ast: aNode;
+		  pc: aPC;
+		  bytecode: aBytecode;
+		  offset: anOffset;
 		  yourself
 ]
 
@@ -49,6 +62,12 @@ StBreakOnStackBehavior >> compiledMethod: anObject [
 { #category : 'execution' }
 StBreakOnStackBehavior >> execute [
 	"I do nothing"
+]
+
+{ #category : 'accessing' }
+StBreakOnStackBehavior >> offset: anObject [
+
+	offset := anObject
 ]
 
 { #category : 'accessing' }
